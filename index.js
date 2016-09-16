@@ -214,7 +214,7 @@ const Swipeout = React.createClass({
     }
 
     if (this.state.swiping) {
-      if (posX == 0 && posY == 0) {
+      if (!this.state.openedRight && !this.state.openedLeft && posX == 0 && posY == 0) {
         var onPress = this.props.onPress;
         if (onPress) onPress();
       }
