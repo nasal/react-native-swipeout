@@ -1,3 +1,10 @@
+# My modifications
+
+I add or modify (simple) stuff when I need to.
+
+1. Added support for **onPress**, **onPressIn**, and **onPressOut**.
+2. Modified **onPress** so it is only handled when the swipeout is closed (icons are hidden).
+
 # react-native-swipeout
 iOS-style swipeout buttons that appear from behind a component
 
