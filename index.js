@@ -22,6 +22,8 @@ const SwipeoutBtn = React.createClass({
     color: PropTypes.string,
     component: PropTypes.node,
     onPress: PropTypes.func,
+    onPressIn: PropTypes.func,
+    onPressOut: PropTypes.func,
     text: PropTypes.string,
     type: PropTypes.string,
     underlayColor: PropTypes.string,
@@ -36,6 +38,8 @@ const SwipeoutBtn = React.createClass({
       height: 0,
       key: null,
       onPress: null,
+      onPressIn: null,
+      onPressOut: null,
       disabled: false,
       text: 'Click me',
       type: '',
@@ -77,6 +81,8 @@ const SwipeoutBtn = React.createClass({
     return  (
       <NativeButton
         onPress={this.props.onPress}
+        onPressIn={this.props.onPressIn}
+        onPressOut={this.props.onPressOut}
         style={styles.swipeoutBtnTouchable}
         underlayColor={this.props.underlayColor}
         disabled={this.props.disabled}
@@ -152,7 +158,9 @@ const Swipeout = React.createClass({
   },
 
   _handlePanResponderGrant: function(e: Object, gestureState: Object) {
-    if(this.props.onOpen){
+    var onPressIn = this.props.onPressIn;
+    if (onPressIn) onPressIn();
+    if (this.props.onOpen) {
       this.props.onOpen(this.props.sectionID, this.props.rowID);
     }
     this.refs.swipeoutContent.measure((ox, oy, width, height) => {
@@ -174,7 +182,7 @@ const Swipeout = React.createClass({
     if (this.state.openedRight) var posX = gestureState.dx - rightWidth;
     else if (this.state.openedLeft) var posX = gestureState.dx + leftWidth;
 
-    //  prevent scroll if moveX is true
+    // prevent scroll if moveX is true
     var moveX = Math.abs(posX) > Math.abs(posY);
     if (this.props.scroll) {
       if (moveX) this.props.scroll(false);
@@ -194,6 +202,7 @@ const Swipeout = React.createClass({
     var contentWidth = this.state.contentWidth;
     var btnsLeftWidth = this.state.btnsLeftWidth;
     var btnsRightWidth = this.state.btnsRightWidth;
+    var onPressOut = this.props.onPressOut;
 
     //  minimum threshold to open swipeout
     var openX = contentWidth*0.33;
@@ -237,6 +246,7 @@ const Swipeout = React.createClass({
 
     //  Allow scroll
     if (this.props.scroll) this.props.scroll(true);
+    if (onPressOut) onPressOut();
   },
 
   _tweenContent: function(state, endValue) {
