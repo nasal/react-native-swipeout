@@ -76,7 +76,7 @@ const SwipeoutBtn = React.createClass({
     var styleSwipeoutBtnText = [styles.swipeoutBtnText];
 
     //  apply text color
-    if (btn.color) styleSwipeoutBtnText.push([{ color: btn.color }]);
+    if (btn.color) styleSwipeoutBtnText.push([{ width: this.props.width || 100, color: btn.color }]);
 
     return  (
       <NativeButton
@@ -113,6 +113,7 @@ const Swipeout = React.createClass({
     scroll: PropTypes.func,
     style: View.propTypes.style,
     sensitivity: PropTypes.number,
+    buttonWidth: PropTypes.number,
   },
 
   getDefaultProps: function() {
@@ -164,10 +165,11 @@ const Swipeout = React.createClass({
       this.props.onOpen(this.props.sectionID, this.props.rowID);
     }
     this.refs.swipeoutContent.measure((ox, oy, width, height) => {
+      let buttonWidth = this.props.buttonWidth || (width/5);
       this.setState({
-        btnWidth: (width/5),
-        btnsLeftWidth: this.props.left ? (width/5)*this.props.left.length : 0,
-        btnsRightWidth: this.props.right ? (width/5)*this.props.right.length : 0,
+        btnWidth: buttonWidth,
+        btnsLeftWidth: this.props.left ? buttonWidth*this.props.left.length : 0,
+        btnsRightWidth: this.props.right ? buttonWidth*this.props.right.length : 0,
         swiping: true,
         timeStart: (new Date()).getTime(),
       });
